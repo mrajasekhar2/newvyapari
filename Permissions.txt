@@ -1,0 +1,82 @@
+First Activity lo ee condition rai..
+
+
+
+    if (!Utils.checkPermission(ctx)) {
+            Utils.requestPermission(MainActivity.this);
+        } else {
+         //    Utils.mCustomToast(ctx, "Permission already granted.", 1);
+        }
+
+
+
+
+
+adhe activity lo last lo idi rai...
+
+
+
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0) {
+                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean cameraAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean storagepermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean readcontacts = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    boolean receivesms = grantResults[4] == PackageManager.PERMISSION_GRANTED;
+                    boolean readstorage = grantResults[5] == PackageManager.PERMISSION_GRANTED;
+                    if (locationAccepted && cameraAccepted && storagepermission && readcontacts && receivesms && readstorage) {
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                                showMessageOKCancel("You need to allow access to all the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{ACCESS_FINE_LOCATION, CAMERA,
+                                                            WRITE_EXTERNAL_STORAGE, READ_CONTACTS, RECEIVE_SMS, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+
+                    }
+                }
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(MainActivity.this).setMessage(message).setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null).create().show();
+    }
+
+
+idi nen Utils class lo raskunna...
+
+
+
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
+    public static boolean checkPermission(Context ctx) {
+        int result = ContextCompat.checkSelfPermission(ctx, ACCESS_FINE_LOCATION);
+        int result1 = ContextCompat.checkSelfPermission(ctx, CAMERA);
+        int result2 = ContextCompat.checkSelfPermission(ctx, WRITE_EXTERNAL_STORAGE);
+        int result3 = ContextCompat.checkSelfPermission(ctx, READ_CONTACTS);
+        int result4 = ContextCompat.checkSelfPermission(ctx, RECEIVE_SMS);
+        int result5 = ContextCompat.checkSelfPermission(ctx, READ_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED && result1 == PackageManager.PERMISSION_GRANTED
+                && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED && result4 == PackageManager.PERMISSION_GRANTED && result5 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static void requestPermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity,
+                new String[]{ACCESS_FINE_LOCATION, CAMERA, WRITE_EXTERNAL_STORAGE, READ_CONTACTS, RECEIVE_SMS, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+    }
